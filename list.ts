@@ -1,6 +1,5 @@
 import { NodeItem } from './node';
 
-// Doubly linked list implementation
 export class List<T> {
     private _headNode: NodeItem<T> | null;
     private _tailNode: NodeItem<T> | null;
@@ -27,12 +26,14 @@ export class List<T> {
     set tail(node: NodeItem<T> | null) {
         this._tailNode = node;
     }
+
+    // Returns a new list with all elements of the original list except the first.
     get tailAllButFirst() {
-        // Returns a new list with all elements of the original list except the first.
-        const clonedList = this.clone();
+        const clonedList = this.cloneRecursion(this.head);
         const headNode = clonedList.head;
         const newHeadNode = headNode ? headNode.nextNode : null;
         clonedList.head = newHeadNode;
+        clonedList.length--;
         return clonedList;
     }
 
@@ -45,14 +46,28 @@ export class List<T> {
     }
 
     reverse(): List<T> {
-        // Reverses the list
-        // Go through the current list and keep prepending nodes to the new list
-        let reversedList: List<T> = new List<T>();
-        let nextNode = this.head;
-        while (nextNode) {
-            reversedList = reversedList.cons(nextNode.data);
+        if (this.head) {
+            // return this.prependList(this.head, new List<T>());
+            return new List<T>().reverseList(this.head);
         }
-        return reversedList;
+        return this;
+    }
+
+    // Reversing a list without cons operation
+    prependList(node: NodeItem<T> | null, list: List<T>): List<T> {
+        if (node === null) {
+            return list;
+        }
+        // Tail call optimized
+        return this.prependList(node.nextNode, list.cons(node.data));
+    }
+
+    // Reversing a list using cons operation
+    reverseList(node: NodeItem<T> | null): List<T> {
+        if (node === null) {
+            return this;
+        }
+        return this.cons(node.data).reverseList(node.nextNode);
     }
 
     // Drops n nodes from the list means doing the tail operation n times
@@ -66,7 +81,7 @@ export class List<T> {
     cons(data: T): List<T> {
         // Create a new Node
         const newNode = new NodeItem<T>(data);
-        const clonedList = this.clone();
+        const clonedList = this.cloneRecursion(this.head);
         // Prepend this data
         newNode.nextNode = clonedList.head;
         clonedList.head = newNode;
@@ -94,9 +109,21 @@ export class List<T> {
         return newList;
     }
 
-
-
-
-
+    cloneRecursion(node: NodeItem<T> | null, list: List<T> = new List<T>(), prevNode: NodeItem<T> | null = null): List<T> {
+        if (node === null) {
+            return list;
+        }
+        const newNode = new NodeItem<T>(node.data);
+        const newList = new List<T>();
+        newList.length = list.length + 1;
+        newList.head = list.head;
+        newList.tail = newNode;
+        if (prevNode) {
+            prevNode.nextNode = newNode;
+        } else {
+            newList.head = newNode;
+        }
+        return this.cloneRecursion(node.nextNode, newList, newNode);
+    }
 
 }
