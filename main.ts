@@ -1,5 +1,5 @@
 import { List } from './list';
-import { printList } from './util';
+import { printList, map, filter } from './util';
 // Create a List of numbers
 const list = new List<number>();
 const newList = list.cons(5).cons(4).cons(3).cons(2);
@@ -23,3 +23,6 @@ console.log('After reverse operation, original List');
 printList(newList);
 console.log('Reversed List');
 printList(reverseList);
+
+printList(map(newList, (x) => 2 * x));
+printList(filter(newList, (x) => x % 2 == 0));

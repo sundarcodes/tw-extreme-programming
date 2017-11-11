@@ -45,6 +45,16 @@ export class List<T> {
         this._length = n;
     }
 
+    elementAt(n: number, node: NodeItem<T> | null = this.head): T | null {
+        if (node === null) {
+            return null;
+        }
+        if (n === 0) {
+            return node.data
+        }
+        return this.elementAt(n - 1, node.nextNode);
+    }
+
     reverse(): List<T> {
         if (this.head) {
             // return this.prependList(this.head, new List<T>());
@@ -89,6 +99,7 @@ export class List<T> {
         return clonedList;
     }
 
+    // Iterative version of clone
     clone(): List<T> {
         // Returns a clone of the current list
         const currentList = this;
@@ -109,6 +120,7 @@ export class List<T> {
         return newList;
     }
 
+    // Recursive version of clone
     cloneRecursion(node: NodeItem<T> | null, list: List<T> = new List<T>(), prevNode: NodeItem<T> | null = null): List<T> {
         if (node === null) {
             return list;
