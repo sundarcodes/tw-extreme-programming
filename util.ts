@@ -15,26 +15,37 @@ function printNodeInfo<T>(node: NodeItem<T> | null) {
     printNodeInfo(node.nextNode);
 }
 
-export function map<T>(list: List<T>, fn: (ele: T) => any) {
-    // const mappedList = new List<T>();
-    // return generateNewNode(list.head, fn, mappedList).reverse();
+
+export function map<T>(list: List<T>, fn: (ele: any) => any) {
+    let mappedList = new List<T>();
+    for (let i = list.length - 1; i >= 0; i--) {
+        mappedList = mappedList.cons(fn(list.elementAt(i)));
+    }
+    return mappedList;
+}
+
+export function filter<T>(list: List<T>, fn: (ele: any) => any) {
+    let filteredList = new List<T>();
+    for (let i = list.length - 1; i >= 0; i--) {
+        if (fn(list.elementAt(i))) {
+            filteredList = filteredList.cons(list.elementAt(i));
+        }
+    }
+    return filteredList;
+}
+
+
+// Recursive version of map
+// May be an overkill :)
+export function mapR<T>(list: List<T>, fn: (ele: T) => any) {
     return mapNode(list.head, fn);
 }
 
-
-export function filter<T>(list: List<T>, fn: (ele: T) => any) {
-    // const mappedList = new List<T>();
-    // return generateNewNode(list.head, fn, mappedList).reverse();
+// Recursive version of filter
+export function filterR<T>(list: List<T>, fn: (ele: T) => any) {
     return filterNode(list.head, fn);
 }
 
-
-function generateNewNode<T>(node: NodeItem<T> | null, fn: (ele: T) => any, list: List<T>): List<T> {
-    if (node === null) {
-        return list;
-    }
-    return generateNewNode(node.nextNode, fn, list.cons(fn(node.data)));
-}
 
 function mapNode<T>(node: NodeItem<T> | null, fn: (ele: T) => any): List<T> {
     if (node === null) {

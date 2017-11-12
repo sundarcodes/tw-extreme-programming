@@ -88,7 +88,10 @@ export class List<T> {
         return this.tailAllButFirst.drop(n - 1);
     }
 
-    cons(data: T): List<T> {
+    cons(data: T | null): List<T> {
+        if (data === null) {
+            return this;
+        }
         // Create a new Node
         const newNode = new NodeItem<T>(data);
         const clonedList = this.cloneRecursion(this.head);

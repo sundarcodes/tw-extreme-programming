@@ -24,5 +24,5 @@ printList(newList);
 console.log('Reversed List');
 printList(reverseList);
 
-printList(map(newList, (x) => 2 * x));
-printList(filter(newList, (x) => x % 2 == 0));
+printList(map(newList, (x: number) => 2 * x));
+printList(filter(newList, (x: number) => x % 2 == 0));
