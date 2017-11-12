@@ -11,28 +11,35 @@ export class List<T> {
         this._length = 0;
     }
 
-    get head(): NodeItem<T> | null {
+    get headNode(): NodeItem<T> | null {
         return this._headNode;
     }
 
-    set head(node: NodeItem<T> | null) {
+    set headNode(node: NodeItem<T> | null) {
         this._headNode = node;
     }
 
-    get tail(): NodeItem<T> | null {
+    get tailNode(): NodeItem<T> | null {
         return this._tailNode;
     }
 
-    set tail(node: NodeItem<T> | null) {
+    set tailNode(node: NodeItem<T> | null) {
         this._tailNode = node;
     }
 
+    get head(): T | null {
+        if (this.headNode != null) {
+            return this.headNode.data
+        }
+        return null;
+    }
+
     // Returns a new list with all elements of the original list except the first.
-    get tailAllButFirst() {
-        const clonedList = this.cloneRecursion(this.head);
-        const headNode = clonedList.head;
+    get tail() {
+        const clonedList = this.cloneRecursion(this.headNode);
+        const headNode = clonedList.headNode;
         const newHeadNode = headNode ? headNode.nextNode : null;
-        clonedList.head = newHeadNode;
+        clonedList.headNode = newHeadNode;
         clonedList.length--;
         return clonedList;
     }
@@ -45,7 +52,7 @@ export class List<T> {
         this._length = n;
     }
 
-    elementAt(n: number, node: NodeItem<T> | null = this.head): T | null {
+    elementAt(n: number, node: NodeItem<T> | null = this.headNode): T | null {
         if (node === null) {
             return null;
         }
@@ -56,9 +63,9 @@ export class List<T> {
     }
 
     reverse(): List<T> {
-        if (this.head) {
-            // return this.prependList(this.head, new List<T>());
-            return new List<T>().reverseList(this.head);
+        if (this.headNode) {
+            // return this.prependList(this.headNode, new List<T>());
+            return new List<T>().reverseList(this.headNode);
         }
         return this;
     }
@@ -85,7 +92,7 @@ export class List<T> {
         if (n === 0) {
             return this;
         }
-        return this.tailAllButFirst.drop(n - 1);
+        return this.tail.drop(n - 1);
     }
 
     cons(data: T | null): List<T> {
@@ -94,28 +101,28 @@ export class List<T> {
         }
         // Create a new Node
         const newNode = new NodeItem<T>(data);
-        const clonedList = this.cloneRecursion(this.head);
+        const clonedList = this.cloneRecursion(this.headNode);
         // Prepend this data
-        newNode.nextNode = clonedList.head;
-        clonedList.head = newNode;
+        newNode.nextNode = clonedList.headNode;
+        clonedList.headNode = newNode;
         clonedList.length++;
         return clonedList;
     }
 
     // Iterative version of clone
-    clone(): List<T> {
+    private clone(): List<T> {
         // Returns a clone of the current list
         const currentList = this;
         const newList = new List<T>();
-        let nextNode = this.head;
-        newList.head = null;
+        let nextNode = this.headNode;
+        newList.headNode = null;
         let prevNode: NodeItem<T> | null = null;
         while (nextNode) {
             const newNode = new NodeItem<T>(nextNode.data);
             if (prevNode) {
                 prevNode.nextNode = newNode;
             } else {
-                newList.head = newNode;
+                newList.headNode = newNode;
             }
             prevNode = newNode;
             nextNode = nextNode.nextNode;
@@ -124,19 +131,19 @@ export class List<T> {
     }
 
     // Recursive version of clone
-    cloneRecursion(node: NodeItem<T> | null, list: List<T> = new List<T>(), prevNode: NodeItem<T> | null = null): List<T> {
+    private cloneRecursion(node: NodeItem<T> | null, list: List<T> = new List<T>(), prevNode: NodeItem<T> | null = null): List<T> {
         if (node === null) {
             return list;
         }
         const newNode = new NodeItem<T>(node.data);
         const newList = new List<T>();
         newList.length = list.length + 1;
-        newList.head = list.head;
-        newList.tail = newNode;
+        newList.headNode = list.headNode;
+        newList.tailNode = newNode;
         if (prevNode) {
             prevNode.nextNode = newNode;
         } else {
-            newList.head = newNode;
+            newList.headNode = newNode;
         }
         return this.cloneRecursion(node.nextNode, newList, newNode);
     }

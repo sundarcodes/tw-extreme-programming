@@ -4,13 +4,16 @@
   "description": "TW Xtreme Functional programming Challenge",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./node_modules/jasmine/bin/jasmine.js --config=jasmine.json",
     "start": "node dist/main.js",
     "build": "node_modules/typescript/bin/tsc"
   },
   "author": "Sundar",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jasmine": "^2.6.3",
+    "jasmine": "^2.8.0",
     "typescript": "^2.6.1"
   }
 }

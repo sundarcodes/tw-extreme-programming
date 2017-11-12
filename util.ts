@@ -3,7 +3,7 @@ import { List } from './list';
 
 export function printList<T>(list: List<T>) {
     console.log('HEAD');
-    printNodeInfo(list.head);
+    printNodeInfo(list.headNode);
 }
 
 function printNodeInfo<T>(node: NodeItem<T> | null) {
@@ -38,12 +38,12 @@ export function filter<T>(list: List<T>, fn: (ele: any) => any) {
 // Recursive version of map
 // May be an overkill :)
 export function mapR<T>(list: List<T>, fn: (ele: T) => any) {
-    return mapNode(list.head, fn);
+    return mapNode(list.headNode, fn);
 }
 
 // Recursive version of filter
 export function filterR<T>(list: List<T>, fn: (ele: T) => any) {
-    return filterNode(list.head, fn);
+    return filterNode(list.headNode, fn);
 }
 
 
