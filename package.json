@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/jasmine": "^2.6.3",
+    "chalk": "^2.3.0",
     "jasmine": "^2.8.0",
     "typescript": "^2.6.1"
   }

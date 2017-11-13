@@ -1,14 +1,15 @@
 import { NodeItem } from './node';
 import { List } from './list';
+import chalk from 'chalk';
 
 export function printList<T>(list: List<T>) {
-    console.log('HEAD');
+    console.log(chalk.green('HEAD'));
     printNodeInfo(list.headNode);
 }
 
 function printNodeInfo<T>(node: NodeItem<T> | null) {
     if (node === null) {
-        console.log('END');
+        console.log(chalk.red('TAIL'));
         return;
     }
     console.log(`${node.data}`);
@@ -64,4 +65,13 @@ function filterNode<T>(node: NodeItem<T> | null, fn: (ele: T) => any): List<T> {
         return filterNode(node.nextNode, fn).cons(node.data);
     }
     return filterNode(node.nextNode, fn);
+}
+
+export function printListOperationInfo<T>(oldList: List<T>, newList: List<T>, operationName: string) {
+    console.log(chalk.bold(`${operationName} Operation`));
+    console.log(chalk.italic.yellow('List Before'))
+    printList(oldList);
+    console.log(chalk.italic.yellow('List After'));
+    printList(newList);
+    console.log('');
 }

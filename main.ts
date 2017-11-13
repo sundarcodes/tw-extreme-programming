@@ -1,28 +1,19 @@
 import { List } from './list';
-import { printList, map, filter } from './util';
-// Create a List of numbers
+import { printList, map, filter, printListOperationInfo } from './util';
+import chalk from 'chalk';
+
 const list = new List<number>();
 const newList = list.cons(5).cons(4).cons(3).cons(2);
-console.log('After cons operation, Prepended List');
-printList(newList);
+printListOperationInfo(list, newList, 'Cons');
 
 const listAfterTail: List<number> = newList.tail;
-console.log('After tail operation, original List');
-printList(newList);
-console.log('Tailed List');
-printList(listAfterTail);
+printListOperationInfo(newList, listAfterTail, 'Tail');
 
 const listAfterDrop: List<number> = newList.drop(2);
-console.log('After drop operation, original List');
-printList(newList);
-console.log('Dropped List');
-printList(listAfterDrop);
+printListOperationInfo(newList, listAfterDrop, 'Drop 2');
 
 const reverseList: List<number> = newList.reverse();
-console.log('After reverse operation, original List');
-printList(newList);
-console.log('Reversed List');
-printList(reverseList);
+printListOperationInfo(newList, reverseList, 'Reverse');
 
-printList(map(newList, (x: number) => 2 * x));
-printList(filter(newList, (x: number) => x % 2 == 0));
+printListOperationInfo(newList, map(newList, (x: number) => 2 * x), 'Map - double numbers');
+printListOperationInfo(newList, filter(newList, (x: number) => x % 2 == 0), 'Filter - even numbers');
